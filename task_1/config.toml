@@ -1,0 +1,14 @@
+[server_config]
+    host="127.0.0.1"
+    port=8080
+    secret="wb_tech"
+    exp_time_min=20
+[postgres_config]
+    host="localhost"
+    port=5432
+    login="wb_tech"
+    password="wb_tech"
+    db="social_network"
+[migration_config]
+    path="./migrations/v1"    
+
