@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS products (
+    id UUID NOT NULL UNIQUE,   
+    name TEXT NOT NULL UNIQUE,
+    rubles BIGINT NOT NULL,
+    kopecs BIGINT NOT NULL
+);
