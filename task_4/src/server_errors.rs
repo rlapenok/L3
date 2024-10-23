@@ -10,7 +10,7 @@ use thiserror::Error;
 use crate::infrastructe::errors::RepoError;
 
 #[derive(Debug, Serialize, Error)]
-#[serde(tag="type",content="desc")]
+#[serde(tag = "type", content = "desc")]
 pub enum ServerError {
     #[error("Error while deserialize request:{0}")]
     Deserialize(String),
@@ -41,9 +41,7 @@ impl IntoResponse for ServerError {
                 RepoError::Internal(_) => {
                     (StatusCode::INTERNAL_SERVER_ERROR, Json(self)).into_response()
                 }
-                RepoError::IdNotExist=>{
-                    (StatusCode::NOT_FOUND,Json(self)).into_response()
-                }
+                RepoError::IdNotExist => (StatusCode::NOT_FOUND, Json(self)).into_response(),
                 _ => (StatusCode::CONFLICT, Json(self)).into_response(),
             },
         }

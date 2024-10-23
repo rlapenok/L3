@@ -9,3 +9,6 @@
         idle_timeout_sec=1200
         max_lifetime_sec=2
         acquire_time_sec=1
+    [kafka]
+        topic_name="L3.4"
+        addr="localhost:9092"    

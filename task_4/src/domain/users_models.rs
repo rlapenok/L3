@@ -2,8 +2,6 @@ use uuid::Uuid;
 
 use crate::handlers::user_handlers::requests::CreateUserRequest;
 
-
-
 pub struct User {
     pub id: Uuid,
     pub name: String,

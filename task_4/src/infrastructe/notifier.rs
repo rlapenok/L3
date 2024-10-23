@@ -1,6 +1,7 @@
 use std::{error::Error, sync::Arc};
 
 use axum::async_trait;
+use log::{error, info};
 use sqlx::postgres::{PgListener, PgNotification};
 use tokio::{
     select, spawn,
@@ -9,19 +10,19 @@ use tokio::{
 };
 use tokio_util::sync::CancellationToken;
 
-use crate::domain::change_notifier::TableChangeNotifier;
+use crate::domain::change_notifier::{TableChangeNotifier, TableChanges};
 
 #[derive(Clone)]
 pub struct Notifier {
     listener: Arc<Mutex<PgListener>>,
     cancellation_token: Arc<CancellationToken>,
-    change_sender: Arc<UnboundedSender<()>>,
+    change_sender: Arc<UnboundedSender<TableChanges>>,
 }
 impl Notifier {
     pub(crate) fn new(
         listener: PgListener,
         cancellation_token: CancellationToken,
-        change_sender: UnboundedSender<()>,
+        change_sender: UnboundedSender<TableChanges>,
     ) -> Self {
         Self {
             listener: Arc::new(Mutex::new(listener)),
@@ -37,29 +38,42 @@ impl Notifier {
 
 #[async_trait]
 impl TableChangeNotifier for Notifier {
-    async fn run_notifier(&self) -> JoinHandle<()> {
+    fn run_notifier(&self) -> JoinHandle<()> {
         let notifier = self.clone();
         spawn(async move {
-            println!("Start notifier");
+            info!("Stop TableChangeNotifier");
+
             loop {
                 select! {
                     result= notifier.recv()=>{
-                        println!("{:?}",result);
-                        //TODO send message to kafka producer
+                        match result{
+                            Ok(notification)=>{
+
+                                let changes=TableChanges{
+                                    table_name:notification.channel().to_owned(),
+                                    payload:notification.payload().to_owned()
+                                };
+                                if let Err(err)=notifier.change_sender.send(changes){
+                                    error!("Error while send message to kafka_producer:{}",err)
+                                }
+                            }
+                            Err(err)=>{
+                                error!("Error while recv notification from database:{}",err)
+                            }
+                        }
                     }
                     _= notifier.cancellation_token.cancelled()=>{
-                        println!("Notifier handle ctrl c");
                         break;
                     }
                 }
             }
-            println!("Stop notifier task")
         })
     }
     async fn stop_notifier(&self) -> Result<(), Box<dyn Error>> {
         let mut guard = self.listener.lock().await;
         guard.unlisten_all().await?;
         self.change_sender.closed().await;
+        info!("Stop TableChangeNotifier");
         Ok(())
     }
 }

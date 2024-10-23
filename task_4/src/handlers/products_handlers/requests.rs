@@ -1,28 +1,26 @@
 use serde::Deserialize;
 use validator::{Validate, ValidationError};
 
-#[derive(Deserialize,Validate)]
-pub struct UpdatePrice{
-    pub rubles:Option<i64>,
+#[derive(Deserialize, Validate)]
+pub struct UpdatePrice {
+    pub rubles: Option<i64>,
     #[validate(custom(function = "kopecs_validation"))]
-    pub kopecs:Option<i64>
+    pub kopecs: Option<i64>,
 }
 
-fn kopecs_validation(data:i64)->Result<(),ValidationError>{
-        if data>99{
-            return  Err(ValidationError::new("more than 99"))
-        }
-        return Ok(())
+fn kopecs_validation(data: i64) -> Result<(), ValidationError> {
+    if data > 99 {
+        return Err(ValidationError::new("more than 99"));
     }
-
-
-#[derive(Deserialize,Validate)]
-pub struct UpdateProductRequest{
-    pub name:Option<String>,
-    #[validate(nested)]
-    pub price:Option<UpdatePrice>
+    Ok(())
 }
 
+#[derive(Deserialize, Validate)]
+pub struct UpdateProductRequest {
+    pub name: Option<String>,
+    #[validate(nested)]
+    pub price: Option<UpdatePrice>,
+}
 
 #[derive(Deserialize, Validate, Debug)]
 pub struct Price {

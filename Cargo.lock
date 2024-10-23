@@ -391,10 +391,21 @@ version = "0.2.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "12d6d568e8e1848c6e7df28ca716ab21f3d61c48760102c1848b5e0299793069"
 dependencies = [
- "confique-macro",
+ "confique-macro 0.0.10",
  "json5",
  "serde",
  "serde_yaml",
+ "toml",
+]
+
+[[package]]
+name = "confique"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d011f79ecb68498e94453e133c67cc5c35ab847684c59fa58b9ce0698e272e7b"
+dependencies = [
+ "confique-macro 0.0.11",
+ "serde",
  "toml",
 ]
 
@@ -408,6 +419,18 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 1.0.109",
+]
+
+[[package]]
+name = "confique-macro"
+version = "0.0.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "df20583fae327154743356c4896906bda1aa9b7df30c5aed73a54cf27fede9de"
+dependencies = [
+ "heck 0.5.0",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.79",
 ]
 
 [[package]]
@@ -1812,9 +1835,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.128"
+version = "1.0.132"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6ff5456707a1de34e7e37f2a6fd3d3f808c318259cbd01ab6377795054b483d8"
+checksum = "d726bfaff4b320266d395898905d0eba0345aae23b54aee3a737e260fd46db03"
 dependencies = [
  "itoa",
  "memchr",
@@ -2252,7 +2275,7 @@ dependencies = [
  "bb8-postgres",
  "chrono",
  "clap",
- "confique",
+ "confique 0.2.6",
  "hmac",
  "jsonwebtoken",
  "serde",
@@ -2289,7 +2312,9 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "clap",
- "confique",
+ "confique 0.3.0",
+ "env_logger",
+ "log",
  "rdkafka",
  "serde",
  "sqlx",

@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 axum = "0.7.7"
 clap = { version = "4.5.20", features = ["derive"] }
-confique = { version = "0.2.6", features = ["toml"] }
+confique = { version = "0.3.0", features = ["toml"] }
 serde = { version = "1.0.210", features = ["derive"] }
 sqlx = { version = "0.8", features = [ "runtime-tokio","postgres","uuid"] }
 thiserror = "1.0.64"
@@ -15,5 +15,7 @@ tokio-util = {version="0.7.12",features = ["rt"]}
 uuid = { version = "1.11.0", features = ["v4","serde"] }
 validator = { version = "0.18.1", features = ["derive"] }
 rdkafka = "0.36.2"
+log = "0.4.22"
+env_logger = "0.11.5"
 
 

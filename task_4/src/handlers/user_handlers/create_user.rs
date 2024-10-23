@@ -1,10 +1,14 @@
 use axum::extract::State;
 
-use crate::{domain::{user_service::UserService, users_models::User}, handlers::{json_extractor_with_validation::JsonExtractor, reponses::CreateUserProductResponse}, server_errors::ServerError};
+use crate::{
+    domain::{user_service::UserService, users_models::User},
+    handlers::{
+        json_extractor_with_validation::JsonExtractor, reponses::CreateUserProductResponse,
+    },
+    server_errors::ServerError,
+};
 
 use super::requests::CreateUserRequest;
-
-
 
 pub async fn create_user<S>(
     State(state): State<S>,

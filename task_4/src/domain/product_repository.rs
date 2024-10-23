@@ -4,7 +4,8 @@ use uuid::Uuid;
 use crate::infrastructe::errors::RepoError;
 
 use super::{
-    products_models::{Product, UpdateProduct}, utils::{CloseRepository, ToChangeNotifier}
+    products_models::{Product, UpdateProduct},
+    utils::{CloseRepository, ToChangeNotifier},
 };
 
 #[async_trait]

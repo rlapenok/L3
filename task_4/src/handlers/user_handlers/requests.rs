@@ -1,9 +1,5 @@
-
-use serde:: Deserialize;
+use serde::Deserialize;
 use validator::Validate;
-
-
-
 
 #[derive(Deserialize, Validate)]
 pub struct CreateUserRequest {

@@ -1,14 +1,13 @@
 use serde::Serialize;
 use thiserror::Error;
 
-
 pub enum RepoType {
     Products,
     Users,
 }
 
 #[derive(Debug, Error, Serialize)]
-#[serde(tag="type",content="desc")]
+#[serde(tag = "type", content = "desc")]
 pub enum RepoError {
     #[error("user/product not exist")]
     IdNotExist,
@@ -29,8 +28,8 @@ impl RepoError {
                     _ => return Self::UserEmailExist(err.to_string()),
                 }
             }
-            return Self::Internal(err.to_string());
+            return Self::Internal(err.to_string())
         }
-        return Self::Internal(sqlx_err.to_string());
+        Self::Internal(sqlx_err.to_string())
     }
 }

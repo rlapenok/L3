@@ -1,12 +1,13 @@
 use axum::extract::{Path, State};
 use uuid::Uuid;
 
-use crate::{domain::{product_service::ProductService, products_models::UpdateProduct}, handlers::json_extractor_with_validation::JsonExtractor, server_errors::ServerError};
+use crate::{
+    domain::{product_service::ProductService, products_models::UpdateProduct},
+    handlers::json_extractor_with_validation::JsonExtractor,
+    server_errors::ServerError,
+};
 
 use super::requests::UpdateProductRequest;
-
-
-
 
 pub async fn update_product<S>(
     State(state): State<S>,
@@ -16,11 +17,11 @@ pub async fn update_product<S>(
 where
     S: ProductService,
 {
-    let product=if let Some(price) =req.price  {
-            UpdateProduct::new(product_id, req.name, price.rubles, price.kopecs)
-    }else{
+    let product = if let Some(price) = req.price {
+        UpdateProduct::new(product_id, req.name, price.rubles, price.kopecs)
+    } else {
         UpdateProduct::new(product_id, req.name, None, None)
-    };    
+    };
     state.update_product(product).await?;
     Ok(())
 }
