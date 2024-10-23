@@ -16,8 +16,8 @@ pub fn create_app() -> Router<ServerState> {
 }
 
 pub async fn shutdown(server: ServerState) {
-    info!("Start gracefull shutdown server");
     ctrl_c().await.expect("failed to install Ctrl+C handler");
+    info!("Start gracefull shutdown server");
     server.shutdown().await;
     info!("Server stopped");
 }
