@@ -1,0 +1,17 @@
+version: '3.8'
+services: 
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    mem_limit: 1024m
+    healthcheck:
+      test: bash -c '((echo >/dev/tcp/localhost/5432) &>/dev/null)'
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    ports:
+      - "5432:5432"  
+    environment:
+      - POSTGRES_PASSWORD=wb_tech
+      - POSTGRES_USER=wb_tech
+      - POSTGRES_DB=L3.5 

@@ -1,0 +1,11 @@
+[app_config]
+    [postgres]
+        host="localhost"
+        port=5432
+        login="wb_tech"
+        password="wb_tech"
+        db="L3.5"
+        max_connections=100
+        idle_timeout_sec=1200
+        max_lifetime_sec=2
+        acquire_time_sec=1
