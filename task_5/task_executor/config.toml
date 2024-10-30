@@ -1,0 +1,16 @@
+[app_config]
+    [last_task_manager]
+        path="./last_task.txt"
+    [redis]
+        host="localhost"
+        port=6379
+        login="wb_tech"
+        password="wb_tech"
+        db=0 
+    [executor]
+        url="http://127.0.0.1:8080"       
+        num_workers=10
+     [tracing]
+        level_stdout="3"  #1-error,2-warn,3-info,4-debug,5-trace   
+        level_otel="5"    #1-error,2-warn,3-info,4-debug,5-trace            
+        url="http://localhost:4317"          

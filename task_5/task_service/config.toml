@@ -1,6 +1,7 @@
 [app_config]
     [postgres]
-        host="localhost"
+        migrations="./migrations"
+        host="postgres"
         port=5432
         login="wb_tech"
         password="wb_tech"
@@ -9,3 +10,13 @@
         idle_timeout_sec=1200
         max_lifetime_sec=2
         acquire_time_sec=1
+    [redis]
+        host="redis"
+        port=6379
+        login="wb_tech"
+        password="wb_tech"
+        db=0
+     [tracing]
+        level_stdout="5"  #1-error,2-warn,3-info,4-debug,5-trace   
+        level_otel="5"    #1-error,2-warn,3-info,4-debug,5-trace            
+        url="http://localhost:4317"                     

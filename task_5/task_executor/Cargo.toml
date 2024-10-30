@@ -4,3 +4,35 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+serde_json = "1.0.132"
+tokio = { version = "1.41.0", features = ["full"] }
+opentelemetry-http = "0.26.0"
+redis = { version = "0.27.5", features = ["tokio-comp","serde","uuid","json"] }
+tokio-util = {version="0.7.12",features = ["rt"]}
+async-trait = "0.1.83"
+confique = { version = "0.3.0", features = ["toml"] }
+log = "0.4.22"
+uuid = { version = "1.11.0", features = ["v4", "serde"] }
+reqwest = {version ="0.12.9",features = ["json"]}
+tracing = "0.1.40"
+clap = {version = "4.5.20",features = ["derive"]}
+redis-macros = "0.4.2"
+serde = { version = "1.0.214", features = ["derive"] }
+chrono = { version = "0.4.38", features = ["serde"] }
+flume = "0.11.1"
+tracing-opentelemetry = "0.27.0"
+opentelemetry = "0.26.0"
+
+
+[dependencies.tracing-subscriber]
+version="0.3.18"
+features=["env-filter"]
+
+
+[dependencies.opentelemetry-otlp]
+version="0.26.0"
+features = [ "trace","grpc-tonic" ]
+
+[dependencies.opentelemetry_sdk]
+version="0.26.0"
+features = [ "rt-tokio" ]

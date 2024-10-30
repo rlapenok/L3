@@ -3,6 +3,7 @@ use axum::{
     extract::{rejection::JsonRejection, FromRequest, Request},
     Json,
 };
+use chrono::{DateTime, Utc};
 use serde::{de::DeserializeOwned, Deserialize};
 use validator::Validate;
 
@@ -12,6 +13,12 @@ use crate::errors::ServerError;
 pub struct CreateTaskRequest {
     #[validate(length(min = 1))]
     pub description: String,
+}
+
+
+#[derive(Deserialize,Validate)]
+pub struct UpdateTask{
+   pub completed_at:DateTime<Utc>
 }
 
 pub struct JsonExtractor<T>(pub T);

@@ -1,10 +1,11 @@
 use std::{error::Error, path::PathBuf};
 
+use crate::config::AppConfig;
 use clap::Parser;
 use confique::Config;
-use tokio::net::TcpListener;
 
-use crate::config::AppConfig;
+use tokio::net::TcpListener;
+use tracing::error;
 
 #[derive(Parser)]
 pub struct AppCli {
@@ -21,11 +22,18 @@ impl AppCli {
 
 impl AppCli {
     pub async fn to_listener(&self) -> Result<TcpListener, Box<dyn Error>> {
-        let listener = TcpListener::bind(&self.address).await?;
+        let listener = TcpListener::bind(&self.address).await.inspect_err(|err| {
+            error!("Error while create TcpListener:{}", err);
+        })?;
         Ok(listener)
     }
     pub fn to_app_config(&self) -> Result<AppConfig, Box<dyn Error>> {
-        let cfg = AppConfig::from_file(&self.path)?;
+        let cfg = AppConfig::from_file(&self.path).inspect_err(|err| {
+            error!(
+                "Error while parse file: {:?} for load config: {}",
+                &self.path, err
+            );
+        })?;
         Ok(cfg)
     }
 }

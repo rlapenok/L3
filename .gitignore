@@ -1,1 +1,5 @@
 target/
+task_5/task_service/local-config.toml
+task_5/task_executor/local-config.toml
+task_5/task_executor/last_task.txt
+task_5/local-docker-compose.yaml

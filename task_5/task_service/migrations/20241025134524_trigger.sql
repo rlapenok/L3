@@ -1,0 +1,3 @@
+CREATE TRIGGER tasks_changes_trigger
+AFTER INSERT OR UPDATE ON tasks
+FOR EACH ROW EXECUTE FUNCTION notify_changes();

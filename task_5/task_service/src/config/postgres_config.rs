@@ -2,9 +2,11 @@ use std::{error::Error, time::Duration};
 
 use confique::Config;
 use sqlx::{pool::PoolOptions, postgres::PgConnectOptions, PgPool, Postgres};
+use tracing::error;
 
 #[derive(Config)]
 pub(crate) struct PostgresConfig {
+    migrations: String,
     host: String,
     port: u16,
     login: String,
@@ -36,7 +38,13 @@ impl PostgresConfig {
     pub async fn to_pool(&self) -> Result<PgPool, Box<dyn Error>> {
         let conn_opt = self.to_connect_opt();
         let pool_opt = self.to_pool_opt();
-        let pool = pool_opt.connect_with(conn_opt).await?;
+        let pool = pool_opt
+            .connect_with(conn_opt)
+            .await
+            .inspect_err(|err| error!("Error while connect to Postgres: {}", err))?;
         Ok(pool)
+    }
+    pub fn get_path_migrations(&self) -> &str {
+        &self.migrations
     }
 }

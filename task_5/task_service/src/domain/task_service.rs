@@ -1,4 +1,5 @@
 use axum::async_trait;
+use chrono::{DateTime, Utc};
 use uuid::Uuid;
 
 use super::{
@@ -10,5 +11,5 @@ use super::{
 pub trait TaskService {
     async fn create_task(&self, task: NewTask) -> Result<(), TaskServiceError>;
     async fn get_task(&self, task_id: Uuid) -> Result<Task, TaskServiceError>;
-    async fn complete_task(&self, task_id: Uuid) -> Result<(), TaskServiceError>;
+    async fn complete_task(&self, task_id: Uuid,time:DateTime<Utc>) -> Result<(), TaskServiceError>;
 }

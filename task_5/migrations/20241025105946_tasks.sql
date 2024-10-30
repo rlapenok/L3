@@ -1,5 +1,0 @@
-CREATE TABLE IF NOT EXISTS tasks (
-    id UUID NOT NULL UNIQUE,   
-    description TEXT NOT NULL,
-    completed BOOLEAN DEFAULT FALSE
-);
