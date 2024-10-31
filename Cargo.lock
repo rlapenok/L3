@@ -664,6 +664,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "deadpool-redis"
+version = "0.18.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bfae6799b68a735270e4344ee3e834365f707c72da09c9a8bb89b45cc3351395"
+dependencies = [
+ "deadpool",
+ "redis 0.27.5",
+]
+
+[[package]]
 name = "deadpool-runtime"
 version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2201,7 +2211,7 @@ version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "90a7a4a7b88300d28a3251c64b5c74e57e46c0cd2238cce81ec0927793255e49"
 dependencies = [
- "deadpool-redis",
+ "deadpool-redis 0.17.2",
  "redis 0.27.5",
  "redis-macros-derive",
  "serde",
@@ -3072,6 +3082,29 @@ dependencies = [
 [[package]]
 name = "task_notifier"
 version = "0.1.0"
+dependencies = [
+ "axum",
+ "chrono",
+ "clap",
+ "confique 0.3.0",
+ "deadpool-redis 0.18.0",
+ "log",
+ "opentelemetry",
+ "opentelemetry-otlp",
+ "opentelemetry_sdk",
+ "redis 0.27.5",
+ "redis-macros",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "tokio",
+ "tokio-util",
+ "tower-http",
+ "tracing",
+ "tracing-opentelemetry",
+ "tracing-subscriber",
+ "uuid",
+]
 
 [[package]]
 name = "task_processor"
