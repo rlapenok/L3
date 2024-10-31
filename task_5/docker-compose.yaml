@@ -1,20 +1,38 @@
 version: '3.8'
 services: 
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"  
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro 
+    depends_on:
+      - task_service
+      - task_notifier
+      - grafana  
+    networks:
+      - L3.5
+      - grafana-stack      
+
   task_service: 
     container_name: task_service 
     build:
       context: ./task_service
       dockerfile: Dockerfile
     image: task_service
-    ports:
-        - 8080:8080
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
+    
+    expose:
+      - 7070
     networks:
       - L3.5
+      - grafana-stack
+
 
 
   task_executor: 
@@ -22,12 +40,13 @@ services:
     build:
       context: ./task_executor
       dockerfile: Dockerfile
-    image: task_service
+    image: task_executor
     depends_on:
       redis:
         condition: service_healthy
     networks:
-      - L3.5   
+      - L3.5
+      - grafana-stack
 
   postgres:
     image: postgres:latest
@@ -38,8 +57,7 @@ services:
       interval: 5s
       timeout: 10s
       retries: 5
-    ports:
-      - "5432:5432"  
+
     environment:
       - POSTGRES_PASSWORD=wb_tech
       - POSTGRES_USER=wb_tech
@@ -47,11 +65,30 @@ services:
     networks:
       - L3.5
 
+
+  task_notifier: 
+    container_name: task_notifier
+    build:
+      context: ./task_notifier
+      dockerfile: Dockerfile
+    image: task_notifier
+
+    expose:
+      - 6060
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - L3.5 
+      - grafana-stack         
+
+
+
+
   redis:
     image: docker.io/bitnami/redis:latest
     container_name: redis
-    #ports:
-    #  - 6379:6379
+
     environment:
       REDIS_PASSWORD: "wb_tech"
     healthcheck:
@@ -62,7 +99,33 @@ services:
     networks:
       - L3.5
 
+  grafana-tempo:
+    image: grafana/tempo:latest
+    container_name: grafana-tempo
+    command: [ "-config.file=/etc/tempo.yaml" ] 
+    volumes:
+      - ./tempo-data/config/shared/tempo.yaml:/etc/tempo.yaml
+      - ./tempo-data:/var/tempo
+    ports:
+      - "3200:3200"   # tempo
+      - "4317:4317"  # otlp grpc
+    networks:
+      - grafana-stack
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"  
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin 
+    depends_on:
+      - grafana-tempo
+    networks:
+      - grafana-stack      
+      
 networks:
   L3.5:
     driver: bridge
-    name: L3.5            
+    name: L3.5
+  grafana-stack:
+    driver: bridge              

@@ -19,4 +19,4 @@
      [tracing]
         level_stdout="5"  #1-error,2-warn,3-info,4-debug,5-trace   
         level_otel="5"    #1-error,2-warn,3-info,4-debug,5-trace            
-        url="http://localhost:4317"                     
+        url="http://grafana-tempo:4317"                     

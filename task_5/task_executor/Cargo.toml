@@ -36,3 +36,7 @@ features = [ "trace","grpc-tonic" ]
 [dependencies.opentelemetry_sdk]
 version="0.26.0"
 features = [ "rt-tokio" ]
+
+
+[profile.release]
+opt-level = "z" 
